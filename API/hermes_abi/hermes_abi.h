@@ -419,7 +419,8 @@ struct HermesABIRuntimeVTable {
       struct HermesABIRuntime *rt,
       struct HermesABIMutableBuffer *buf);
 
-  /// Get an ArrayBuffer's underlying external data (MutableBuffer) if it has one.
+  /// Get an ArrayBuffer's underlying external data (MutableBuffer) if it has
+  /// one.
   struct HermesABIMutableBufferOrError (*get_arraybuffer_external_data)(
       struct HermesABIRuntime *rt,
       struct HermesABIArrayBuffer *buf);

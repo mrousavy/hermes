@@ -831,8 +831,7 @@ HermesABIMutableBufferOrError get_arraybuffer_external_data(
     return abi::createArrayBufferOrError(HermesABIErrorCodeJSError);
   }
 
-  auto mutableBuffer =
-      reinterpret_cast<HermesABIMutableBuffer *>(context);
+  auto mutableBuffer = reinterpret_cast<HermesABIMutableBuffer *>(context);
   return abi::createMutableBufferOrError(*mutableBuffer);
 }
 

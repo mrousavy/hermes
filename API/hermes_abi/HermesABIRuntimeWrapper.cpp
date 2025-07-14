@@ -946,7 +946,8 @@ class HermesABIRuntimeWrapper : public Runtime {
   }
   std::shared_ptr<MutableBuffer> getMutableBuffer(
       const ArrayBuffer &buffer) override {
-    auto mutableBuffer = vtable_->get_arraybuffer_external_data(abiRt_, toABIArrayBuffer(ab));
+    auto mutableBuffer =
+        vtable_->get_arraybuffer_external_data(abiRt_, toABIArrayBuffer(ab));
     return unwrap(mutableBuffer);
   }
   size_t size(const Array &arr) override {
