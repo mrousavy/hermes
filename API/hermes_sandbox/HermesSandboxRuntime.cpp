@@ -270,6 +270,7 @@ struct SandboxNativeState {
   F(create_array, u32, (w2c_hermes *, u32, u32))                              \
   F(get_array_length, u32, (w2c_hermes *, u32, u32))                          \
   F(create_arraybuffer_from_external_data, u32, (w2c_hermes *, u32, u32))     \
+  F(get_arraybuffer_external_data, u32, (w2c_hermes *, u32, u32))             \
   F(get_arraybuffer_data, void, (w2c_hermes *, u32, u32, u32))                \
   F(get_arraybuffer_size, void, (w2c_hermes *, u32, u32, u32))                \
   F(create_propnameid_from_string, u32, (w2c_hermes *, u32, u32))             \
