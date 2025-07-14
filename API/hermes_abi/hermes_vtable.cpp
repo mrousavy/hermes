@@ -810,6 +810,31 @@ HermesABIArrayBufferOrError create_arraybuffer_from_external_data(
   return hart->createArrayBufferOrError(arrayBuffer.getHermesValue());
 }
 
+HermesABIMutableBufferOrError get_arraybuffer_external_data(
+    HermesABIRuntime *abiRt,
+    HermesABIArrayBuffer buf) {
+  auto *hart = impl(abiRt);
+  auto &runtime = *hart->rt;
+  auto ab = toHandle(buf);
+  if (!ab->attached()) {
+    hart->nativeExceptionMessage =
+        "Cannot get external data of detached ArrayBuffer.";
+    return abi::createMutableBufferOrError(HermesABIErrorCodeNativeException);
+  }
+  void *context = nullptr;
+  auto res = vm::JSArrayBuffer::getExternalDataBlock(runtime, *ab, &context);
+  if (context == nullptr) {
+    // ArrayBuffer does not hold a MutableBuffer.
+    return abi::createMutableBufferOrError(nullptr);
+  }
+  if (res != vm::ExecutionStatus::RETURNED) {
+    return abi::createArrayBufferOrError(HermesABIErrorCodeJSError);
+  }
+
+  auto mutableBuffer = reinterpret_cast<HermesABIMutableBuffer *>(context);
+  return abi::createMutableBufferOrError(*mutableBuffer);
+}
+
 HermesABIUint8PtrOrError get_arraybuffer_data(
     HermesABIRuntime *abiRt,
     HermesABIArrayBuffer buf) {
@@ -1471,6 +1496,7 @@ constexpr HermesABIRuntimeVTable HermesABIRuntimeImpl::vtable = {
     create_array,
     get_array_length,
     create_arraybuffer_from_external_data,
+    get_arraybuffer_external_data,
     get_arraybuffer_data,
     get_arraybuffer_size,
     create_propnameid_from_string,

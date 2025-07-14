@@ -51,6 +51,7 @@ enum HermesABIErrorCode {
   V(Symbol)                         \
   V(Function)                       \
   V(ArrayBuffer)                    \
+  V(MutableBuffer)                  \
   V(PropNameID)                     \
   V(WeakObject)
 
@@ -417,6 +418,12 @@ struct HermesABIRuntimeVTable {
   struct HermesABIArrayBufferOrError (*create_arraybuffer_from_external_data)(
       struct HermesABIRuntime *rt,
       struct HermesABIMutableBuffer *buf);
+
+  /// Get an ArrayBuffer's underlying external data (MutableBuffer) if it has
+  /// one.
+  struct HermesABIMutableBufferOrError (*get_arraybuffer_external_data)(
+      struct HermesABIRuntime *rt,
+      struct HermesABIArrayBuffer *buf);
 
   /// Get a pointer to the underlying data for the given ArrayBuffer.
   struct HermesABIUint8PtrOrError (*get_arraybuffer_data)(
